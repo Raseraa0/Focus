@@ -23,7 +23,7 @@
 
 - Afficher tout les exo présent dans exo
 - Possibilité de filtrer par label (si plusieur label, mettre AND ou OR)
-- Possibilité de créer un Exo ici -> Ecran 3XX
+- Possibilité de créer un Exo ici -> Ecran 32
 
 # Ecran 212 : Do Exo
 
@@ -32,14 +32,35 @@
 - Je vois un warning si ça fait longtemps que je stagne sur cette exo ?
 - J'ai la possibilité de rentrer ce que j'ai fais par exemple 8 rep 30 kg et comme ça j'ai tt les data de chaque série (je peux préremplir ou proposer des preset genre c'est pas juste un input, c'est une liste je peux cliquer sur 7 rep 8 rep 9 rep 10 rep ou écrire ce que je veux)
   TODO
+- Je peux cocher une case imprévue (et dire douleur épaule, )
+- J'ai la possibilité de laissé un retour sur mon exo si besoin
+- Je peux dire si j'ai eu mal quelque part
+- A la fin je valide l'exo en mode terminé
 
 # Ecran 3 : Config
 
-TODO
+- possibilité de créer/modifier une session -> Ecran 31
+- possibilité de créer un exo -> Ecran 32
+- possibilité de modifier un exo -> Ecran 33
+
+# Ecran 31 : Create modify session
+
+- Remplissage du nom
+- Remplissage de la description
+- Ajout d'exo, avec possibilité de créer des exo -> Ecran 32
+
+# Ecran 32 : Create Exo
+
+- remplir note, label nom etc
+
+# Ecran 33 : Modifier exo
+
+- modif note, label nom etc
 
 # Ecran 4 : Stat
 
-TODO
+- Possibilité de voir un espace de calendrier avec les jours ou j'ai fais une séance (coloration en fonction du preset)
+- Possibilité de voir, sur 1 exo, la progression
 
 # Ecran 5 : Paramètre
 
@@ -47,31 +68,76 @@ Présentation comme les parametre des manière général
 
 - Une possibilité d'exporter les données au format JSON
 
-TODO
-
 # DATA
 
-default_day_session:
-{
-"monday" : "push 1",
-"friday" : "pull 1",
-}
+Exercise
 
-session:
-{
-"push 1" : {
+- id
+- name
+- note
+- image_path
+- is_active
 
-    }
+ExoLabel
 
-}
+- id
+- name
 
-exo:
-{
-"pulldown": {
-label : ["exo_pour_pull","exo_facile"]
-"img" : src/aze/aze.png",
-"note" : "Faire attention a bien ressentir le dos"
+SessionLabel
 
-    }
+- id
+- name
 
-}
+ExerciseLabel
+
+- exercise_id
+- label_id
+
+PresetSession
+
+- id
+- name
+- description
+- label
+
+PresetSessionExercise
+
+- preset_id
+- exercise_id
+- position
+
+WorkoutSession
+
+- id
+- date
+- preset_id (nullable)
+- status (draft / completed / aborted)
+- global_feeling
+- note
+
+WorkoutExercise
+
+- id
+- session_id
+- exercise_id
+- note
+- pain_flag
+
+SetPerformance
+
+- id
+- workout_exercise_id
+- set_index
+- reps
+- weight
+- completed
+
+PainEvent
+
+- workout_exercise_id
+- comment
+
+DefaultDayPreset
+
+- day_of_week
+- preset_id
