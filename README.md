@@ -98,10 +98,10 @@ ExoLabel
 - id
 - name
 
-SessionLabel
+(SessionLabel
 
 - id
-- name
+- name)
 
 ExerciseLabel
 
@@ -113,15 +113,16 @@ PresetSession
 - id
 - name
 - description
-- label
+- isActive
 
 PresetSessionExercise
 
 - preset_id
 - exercise_id
 - position
+- setsnbr
 
-WorkoutSession
+Workout
 
 - id
 - date
