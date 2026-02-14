@@ -1,5 +1,8 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
+/**
+ * Propreties
+ */
 type Props = {
   name: string;
   setName: (arg0: string) => void;
@@ -8,6 +11,18 @@ type Props = {
   autoFocus?: boolean;
 };
 
+/**
+ * @name InputValue
+ *
+ * Display an input field, whth a label juste above, and
+ * a capacity to auto-update the data value when typing
+ *
+ * @param name Value of the input field
+ * @param setName Function from UseState to update name variable
+ * @param label Text displayed just above the input field
+ * @param placeHolder Place holder of the input field
+ * @param autoFocus Decide if focus on this input when entering the screen
+ */
 export default function InputValue({
   name,
   setName,
@@ -28,6 +43,10 @@ export default function InputValue({
     </View>
   );
 }
+
+/**
+ * StyleSheet
+ */
 const styles = StyleSheet.create({
   label: {
     fontSize: 14,

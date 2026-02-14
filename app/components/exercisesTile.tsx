@@ -1,6 +1,15 @@
 import { StyleSheet, Text, View } from "react-native";
-import { ExercisesType } from "../database/db";
+import { ExercisesType } from "../database/dataType";
 
+/**
+ * @name ExercisesTile
+ *
+ * Display a tile with most useful data
+ * relative to an exercises
+ *
+ * @param item Item containing all informations concerning
+ * an exercises, based on the exercises scema model
+ */
 export default function ExercisesTile(item: ExercisesType) {
   return (
     <View key={item.id} style={styles.card}>
@@ -16,6 +25,9 @@ export default function ExercisesTile(item: ExercisesType) {
   );
 }
 
+/**
+ * StyleSheet
+ */
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#FFFFFF",

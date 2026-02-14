@@ -1,12 +1,25 @@
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, TextInput, View } from "react-native";
 
+/**
+ * Propreties
+ */
 type Props = {
   value: string;
   handleSearch: (arg0: string) => void;
   placeHolder?: string;
 };
 
+/**
+ * @name SearchBar
+ *
+ * Display a search bar with an action to execute
+ * when the user is typing in the input field
+ *
+ * @param value
+ * @param handleSearch
+ * @param placeHolder
+ */
 export default function SearchBar({
   value,
   handleSearch,
@@ -31,6 +44,9 @@ export default function SearchBar({
   );
 }
 
+/**
+ * StyleSheet
+ */
 const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: "row",

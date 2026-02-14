@@ -1,10 +1,20 @@
 import { StyleSheet, Text, View } from "react-native";
 import Close from "./close";
 
+/**
+ * Propreties
+ */
 type Props = {
   title: string;
 };
 
+/**
+ * @name HeaderTitle
+ *
+ * Display a text with a title format
+ *
+ * @param title Text for the title
+ */
 export function HeaderTitle({ title }: Props) {
   return (
     <View>
@@ -13,6 +23,14 @@ export function HeaderTitle({ title }: Props) {
   );
 }
 
+/**
+ * @name HeaderWithClose
+ *
+ * Display a header, composed of a title
+ * and a close button
+ *
+ * @param title Text for the title
+ */
 export default function HeaderWithClose({ title }: Props) {
   return (
     <View style={styles.header}>
@@ -22,6 +40,9 @@ export default function HeaderWithClose({ title }: Props) {
   );
 }
 
+/**
+ * StyleSheet
+ */
 const styles = StyleSheet.create({
   header: {
     flexDirection: "row",

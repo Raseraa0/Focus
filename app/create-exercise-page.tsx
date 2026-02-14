@@ -12,19 +12,35 @@ import HeaderWithClose from "./components/header";
 import InputValue from "./components/inputValue";
 import SaveButton from "./components/saveButton";
 
+/**
+ * @name CreateExerciseScreen
+ *
+ * Page to create an exercise
+ */
 export default function CreateExerciseScreen() {
+  // Name of the created exercise
   const [name, setName] = useState("");
+
+  // Note of the created exercise
   const [note, setNote] = useState("");
+
+  // Router for navigation
   const router = useRouter();
 
+  /**
+   * @name handleSave
+   *
+   * Check input data and insert the new exercise
+   * into the exercises table in database
+   */
   const handleSave = async () => {
-    // Check
+    // Check name cannot be null
     if (name.trim().length === 0) {
       Alert.alert("Erreur", "Le nom de l'exercice ne peut pas être vide.");
       return;
     }
 
-    // Add
+    // Add the exercise to the databse
     try {
       await addExercise(name, note);
       Alert.alert("Succès", `L'exercice "${name}" a été créé !`, [
