@@ -5,6 +5,7 @@ type Props = {
   setName: (arg0: string) => void;
   label?: string;
   placeHolder?: string;
+  autoFocus?: boolean;
 };
 
 export default function InputValue({
@@ -12,6 +13,7 @@ export default function InputValue({
   setName,
   label = "",
   placeHolder = "",
+  autoFocus = false,
 }: Props) {
   return (
     <View>
@@ -21,7 +23,7 @@ export default function InputValue({
         placeholder={placeHolder}
         value={name}
         onChangeText={setName}
-        autoFocus
+        autoFocus={autoFocus}
       />
     </View>
   );

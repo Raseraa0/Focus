@@ -11,6 +11,8 @@ export const openDatabase = async () => {
 export type ExercisesType = {
   id: number;
   name: string
+  note?: string
+  isActive: number
 }
 
 export const initDatabase = async () => {
@@ -24,7 +26,10 @@ export const initDatabase = async () => {
 
     CREATE TABLE IF NOT EXISTS exercises (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL
+      name TEXT NOT NULL,
+      note TEXT,
+      isActive INTEGER DEFAULT 1
     );
   `);
 };
+

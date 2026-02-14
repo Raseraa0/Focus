@@ -14,6 +14,7 @@ import SaveButton from "./components/saveButton";
 
 export default function CreateExerciseScreen() {
   const [name, setName] = useState("");
+  const [note, setNote] = useState("");
   const router = useRouter();
 
   const handleSave = async () => {
@@ -25,7 +26,7 @@ export default function CreateExerciseScreen() {
 
     // Add
     try {
-      await addExercise(name);
+      await addExercise(name, note);
       Alert.alert("Succès", `L'exercice "${name}" a été créé !`, [
         { text: "OK", onPress: () => router.back() },
       ]);
@@ -47,6 +48,14 @@ export default function CreateExerciseScreen() {
           setName={setName}
           placeHolder="Ex : Développé couché"
           label="Nom de l'exercice"
+          autoFocus={true}
+        ></InputValue>
+
+        <InputValue
+          name={note}
+          setName={setNote}
+          placeHolder="..."
+          label="Information supplémentaire"
         ></InputValue>
         <SaveButton onPress={handleSave} />
       </View>

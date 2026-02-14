@@ -1,8 +1,8 @@
 import { ExercisesType, openDatabase } from './db';
 
-export const addExercise = async (name: string) => {
+export const addExercise = async (name: string, note: string) => {
     const db = await openDatabase();
-    const result = await db.runAsync('INSERT INTO exercises (name) VALUES (?);', [name]);
+    const result = await db.runAsync('INSERT INTO exercises (name,note) VALUES (?,?);', [name, note]);
     return result.lastInsertRowId; // Retourne l'ID généré
 };
 
