@@ -9,6 +9,7 @@ type Props = {
   label?: string;
   placeHolder?: string;
   autoFocus?: boolean;
+  numberOfLines?: number;
 };
 
 /**
@@ -22,6 +23,7 @@ type Props = {
  * @param label Text displayed just above the input field
  * @param placeHolder Place holder of the input field
  * @param autoFocus Decide if focus on this input when entering the screen
+ * @param numberOfLines TODO
  */
 export default function InputValue({
   name,
@@ -29,6 +31,7 @@ export default function InputValue({
   label = "",
   placeHolder = "",
   autoFocus = false,
+  numberOfLines = 1,
 }: Props) {
   return (
     <View>
@@ -39,6 +42,9 @@ export default function InputValue({
         value={name}
         onChangeText={setName}
         autoFocus={autoFocus}
+        // multiline={numberOfLines !== 1}
+        numberOfLines={numberOfLines}
+        textAlignVertical="top"
       />
     </View>
   );
@@ -59,6 +65,5 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     fontSize: 16,
-    marginBottom: 25,
   },
 });

@@ -28,16 +28,16 @@ export type ExercisesType = {
 
 
 /**
- * @name ExoLabelType
+ * @name LabelType
  * 
- * @table exolabel
+ * @table label
  * 
  * This table contains all informations relative 
  * to labels
  * 
  * @key id
  */
-export type ExoLabelType = {
+export type LabelType = {
 
     // Id of the label
     id: number;

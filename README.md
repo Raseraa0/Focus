@@ -13,6 +13,13 @@ Statistique avancé
 Pour ce qui est du nombre de réppétition et du nombre de série, plutot que de faire un simple champ input, essyayer peut etre de juste faire un espace de scroll vertical (genre comme le select des date de naissance)
 Pour les truc rep/charge, mettre une option pour dupliquer pcq souvent les rep sont les mêmes
 
+IMPORTANT Liste idée
+Avoir un état global qqp (Context API) Pour save les données quand je vais naviguer entre les pages
+Rajouter un flag degressif pour chaque repetition
+Regarder pour l'ajout d'un chrono entre chaque serie (et le temps apres chaque serie peut etre parametré par exercice ajouté a un session)
+Faire en sorte que quand je fais ma seance, je puisse avoir acces a un ecran "easy access" dans lequel ca va m'afficher en pleine ecran les serie une par une, et 
+en plein ecran je peux facilement changer le poid le nombre de rep et tt
+cross
 # Ecran 1 : Main
 
 - Bouton voir statistique -> Ecran 2
@@ -148,10 +155,10 @@ SetPerformance
 - weight
 - completed
 
-PainEvent
+(PainEvent
 
 - workout_exercise_id
-- comment
+- comment)
 
 DefaultDayPreset
 

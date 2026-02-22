@@ -33,12 +33,28 @@ export const initDatabase = async () => {
   // See description of table in dataType file
   await db.execAsync(`
     PRAGMA foreign_keys = ON;
-
+    
+    -- Table des exercices
     CREATE TABLE IF NOT EXISTS exercises (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       note TEXT,
       isActive INTEGER DEFAULT 1
+    );
+  
+    -- Table des labels
+    CREATE TABLE IF NOT EXISTS label (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL UNIQUE
+    );
+
+    -- Table de liaison (Table de jointure)
+    CREATE TABLE IF NOT EXISTS exerciselabellink (
+      exercise_id INTEGER NOT NULL,
+      label_id INTEGER NOT NULL,
+      PRIMARY KEY (exercise_id, label_id),
+      FOREIGN KEY (exercise_id) REFERENCES exercises (id) ON DELETE CASCADE,
+      FOREIGN KEY (label_id) REFERENCES label (id) ON DELETE CASCADE
     );
   `);
 };

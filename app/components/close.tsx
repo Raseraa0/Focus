@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 /**
  * Propreties
@@ -26,8 +26,19 @@ export default function Close({ size = 28, color = "#000", onPress }: Props) {
   const router = useRouter();
 
   return (
-    <TouchableOpacity onPress={onPress ?? (() => router.back())}>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={onPress ?? (() => router.back())}
+    >
       <Ionicons name="close-circle-outline" size={size} color={color} />
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    borderRadius: 5,
+    backgroundColor: "#ef4444DD",
+    padding: 4,
+  },
+});

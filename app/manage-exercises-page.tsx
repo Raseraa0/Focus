@@ -2,6 +2,7 @@ import { getExercises } from "@/app/database/exerciseService";
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import ExercisesTile from "./components/exercisesTile";
+import HeaderWithClose from "./components/header";
 import SearchBar from "./components/searchBar";
 import { ExercisesType } from "./database/dataType";
 
@@ -60,6 +61,7 @@ export default function ManageExercisesScreen() {
 
   return (
     <View style={styles.container}>
+      <HeaderWithClose title="Tous les exercices" />
       <SearchBar
         value={search}
         placeHolder="Rechercher un exercice..."
