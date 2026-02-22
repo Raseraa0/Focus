@@ -28,6 +28,8 @@ export const initDatabase = async () => {
   // If it is needed to keep the data in table,
   // please use ALTER TABLE
   // await db.execAsync('DROP TABLE IF EXISTS exercises;');
+  // await db.execAsync('DROP TABLE IF EXISTS labels;');
+  // await db.execAsync('DROP TABLE IF EXISTS exerciselabellink;');
 
   // Creation of table
   // See description of table in dataType file
@@ -43,7 +45,7 @@ export const initDatabase = async () => {
     );
   
     -- Table des labels
-    CREATE TABLE IF NOT EXISTS label (
+    CREATE TABLE IF NOT EXISTS labels (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE
     );
@@ -54,7 +56,7 @@ export const initDatabase = async () => {
       label_id INTEGER NOT NULL,
       PRIMARY KEY (exercise_id, label_id),
       FOREIGN KEY (exercise_id) REFERENCES exercises (id) ON DELETE CASCADE,
-      FOREIGN KEY (label_id) REFERENCES label (id) ON DELETE CASCADE
+      FOREIGN KEY (label_id) REFERENCES labels (id) ON DELETE CASCADE
     );
   `);
 };

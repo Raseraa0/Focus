@@ -2,12 +2,12 @@ import { addExercise } from "@/app/database/exerciseService";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
-import ActiveLabels from "./components/activeLabels";
-import AddLabelButton from "./components/addLabelButton";
-import HeaderWithClose from "./components/header";
-import InputValue from "./components/inputValue";
-import LabelPopup from "./components/labelPopup";
-import SaveButton from "./components/saveButton";
+import ActiveLabels from "./components/high/activeLabels";
+import LabelPopup from "./components/high/labelPopup";
+import AddLabelButton from "./components/low/addLabelButton";
+import HeaderWithClose from "./components/low/header";
+import InputValue from "./components/low/inputValue";
+import SaveButton from "./components/low/saveButton";
 import { LabelType } from "./database/dataType";
 import { getLabels } from "./database/labelsService";
 
@@ -61,7 +61,8 @@ export default function CreateExerciseScreen() {
 
     // Add the exercise to the databse
     try {
-      await addExercise(name, note);
+      const labelID = labels.map((item) => item.id);
+      await addExercise(name, note, labelID);
       Alert.alert("Succès", `L'exercice "${name}" a été créé !`, [
         { text: "Retour", onPress: () => router.back() },
         {
@@ -69,6 +70,7 @@ export default function CreateExerciseScreen() {
           onPress: () => {
             setName("");
             setNote("");
+            setLabels([]);
           },
         },
       ]);
@@ -100,22 +102,24 @@ export default function CreateExerciseScreen() {
           ></InputValue>
 
           <ActiveLabels labels={labels} setLabels={setLabels} />
-          <AddLabelButton setShowPopup={setShowPopup} />
+          <AddLabelButton text="Ajouter un label" setShowPopup={setShowPopup} />
         </View>
         <SaveButton onPress={handleSave} />
       </View>
       {showPopup && (
         <LabelPopup
           allLabels={allLabels}
+          setAllLabels={setAllLabels}
           labels={labels}
           setLabels={setLabels}
           setShowPopup={setShowPopup}
+          canAddLabel
         ></LabelPopup>
       )}
     </View>
   );
 }
-
+TODO factoriser ce qu'il y a actuellement en un maximum de composant
 const styles = StyleSheet.create({
   container: {
     flex: 1,

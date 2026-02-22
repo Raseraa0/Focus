@@ -24,6 +24,7 @@ export type ExercisesType = {
     // exercise is deleted, to keep informations
     // for statistics
     isActive: number;
+
 }
 
 

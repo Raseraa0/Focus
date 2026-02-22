@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import Close from "./close";
+import Close from "../low/close";
 
 /**
  * Propreties

@@ -27,3 +27,17 @@ export const getLabels = async () => {
     const db = await openDatabase();
     return await db.getAllAsync<LabelType>('SELECT * FROM labels;');
 };
+
+export const getLabelsByExercise = async (exoID: number): Promise<LabelType[]> => {
+    const db = await openDatabase();
+    const query = `
+    SELECT l.id, l.name 
+    FROM labels l
+    JOIN exerciselabellink ell
+        ON l.id = ell.label_id
+    WHERE ell.exercise_id = ?
+  `;
+
+    // Remplacer 'db' par ton instance de base de données
+    return await db.getAllAsync(query, [exoID]);
+}

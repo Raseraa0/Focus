@@ -1,5 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
-import { ExercisesType } from "../database/dataType";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { ExercisesWithLabelsType } from "../../database/joinDateType";
+
+interface ExercisesTileProps extends ExercisesWithLabelsType {
+  onDelete?: (id: number) => void;
+}
 
 /**
  * @name ExercisesTile
@@ -10,7 +20,7 @@ import { ExercisesType } from "../database/dataType";
  * @param item Item containing all informations concerning
  * an exercises, based on the exercises scema model
  */
-export default function ExercisesTile(item: ExercisesType) {
+export default function ExercisesTile(item: ExercisesTileProps) {
   return (
     <View key={item.id} style={styles.card}>
       <View style={styles.cardInfo}>
@@ -20,7 +30,20 @@ export default function ExercisesTile(item: ExercisesType) {
         ) : (
           <Text style={styles.noNote}>Aucune note</Text>
         )}
+        <FlatList
+          data={item.labels}
+          keyExtractor={(labelItem) => labelItem.id.toString()}
+          renderItem={({ item }) => (
+            <Text style={styles.labelText}>{item.name}</Text>
+          )}
+        ></FlatList>
       </View>
+      <TouchableOpacity
+        onPress={() => item.onDelete && item.onDelete(item.id)}
+        style={styles.deleteButton}
+      >
+        <Text style={styles.deleteText}>✕</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -61,5 +84,24 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#AAA",
     fontStyle: "italic",
+  },
+  deleteButton: {
+    padding: 8,
+    marginLeft: 10,
+  },
+  deleteText: {
+    color: "#FF3B30",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  labelText: {
+    fontSize: 12,
+    color: "#007AFF",
+    marginRight: 8,
+    marginTop: 8,
+    backgroundColor: "#E5F1FF",
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 4,
   },
 });

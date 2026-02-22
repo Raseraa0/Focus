@@ -2,10 +2,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 type Props = {
+  text: string;
   setShowPopup: (arg0: boolean) => void;
 };
 
-export default function AddLabelButton({ setShowPopup }: Props) {
+export default function AddLabelButton({ setShowPopup, text }: Props) {
   return (
     <TouchableOpacity
       style={styles.button}
@@ -14,7 +15,7 @@ export default function AddLabelButton({ setShowPopup }: Props) {
       }}
     >
       <Ionicons name="add-circle-sharp" color="#fff" size={24}></Ionicons>
-      <Text style={styles.text}>Ajouter un label</Text>
+      <Text style={styles.text}>{text}</Text>
     </TouchableOpacity>
   );
 }

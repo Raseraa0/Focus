@@ -1,10 +1,10 @@
+import { LabelType } from "@/app/database/dataType";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { ExoLabelType } from "../database/dataType";
 
 type Props = {
-  labels: ExoLabelType[];
-  setLabels: (arg0: ExoLabelType[]) => void;
+  labels: LabelType[];
+  setLabels: (arg0: LabelType[]) => void;
 };
 
 export default function ActiveLabels({ labels, setLabels }: Props) {
