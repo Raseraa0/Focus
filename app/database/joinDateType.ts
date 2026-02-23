@@ -1,15 +1,16 @@
-import { LabelType } from "./dataType";
+import { ExercisesType, LabelType } from "./dataType";
 
-export type ExercisesWithLabelsType = {
+/**
+ * @name ExercisesWithLabelsType
+ * 
+ * This type contains informations after the join
+ * of exercises and labels table
+ * 
+ */
+export type ExercisesWithLabelsType = ExercisesType & {
+    // Contains all fields from ExercisesType
 
-    id: number;
-
-    name: string
-
-    note?: string
-
-    isActive: number;
-
+    // List of labels
     labels: LabelType[];
 
 }

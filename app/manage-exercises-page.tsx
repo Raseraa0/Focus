@@ -1,5 +1,5 @@
 import { deleteExercise, getExercises } from "@/app/database/exerciseService";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import ActiveLabels from "./components/high/activeLabels";
 import ExercisesTile from "./components/high/exercisesTile";
@@ -17,51 +17,61 @@ import { getLabels, getLabelsByExercise } from "./database/labelsService";
  * Page to manage all exercises
  */
 export default function ManageExercisesScreen() {
-  // Search filter typed by the user
+  // Search filter
   const [search, setSearch] = useState("");
 
-  // List of all exercises fetched from the database
+  // All exercises from database
   const [exercises, setExercises] = useState<ExercisesWithLabelsType[]>([]);
 
+  // If popUp is shown (for label)
   const [showPopup, setShowPopup] = useState(false);
 
+  // All labels from databse
   const [allLabels, setAllLabels] = useState<LabelType[]>([]);
 
+  // Current selected labels (for filtering)
   const [labels, setLabels] = useState<LabelType[]>([]);
 
-  // List of all exercises fetched from database
-  // but with a filter => containing filter substring
+  // Shown exercises (with applying filters)
   const [filteredExercises, setFilteredExercises] = useState<
     ExercisesWithLabelsType[]
   >([]);
 
+  // Every time a filter change (search or labels)
+  // We are updating the shown exercices
   useEffect(() => {
     const query = search.toLowerCase().trim();
 
     const filtered = exercises.filter((item) => {
-      // 1. Vérification du texte (nom de l'exercice)
+      // Must contains text as substring
       const matchesText = item.name.toLowerCase().includes(query);
 
-      // 2. Vérification des labels (doit contenir TOUS les labels du filtre)
-      // Si aucun label n'est sélectionné dans le filtre, on laisse passer
+      // Must contains all labels
       const matchesLabels =
         labels.length === 0 ||
         labels.every((filterLabel) =>
-          item.labels.some((exoLabel) => exoLabel.id === filterLabel.id)
+          item.labels.some((exoLabel) => exoLabel.id === filterLabel.id),
         );
 
       return matchesText && matchesLabels;
     });
 
+    // Set shown exercises
     setFilteredExercises(filtered);
   }, [search, labels, exercises]);
 
-  // When the screen is created, load exercises data
+  // When the screen is created, load data
   useEffect(() => {
     loadData();
     loadLabels();
   }, []);
 
+  /**
+   * @name loadLabels
+   *
+   * Get all labels from databse and
+   * map it to labels list
+   */
   const loadLabels = async () => {
     const loadedLabels = await getLabels();
     setAllLabels(loadedLabels);
@@ -73,24 +83,28 @@ export default function ManageExercisesScreen() {
    * Get all exercises data from database and
    * map it to all exercises list
    * and to filtered exercises list (initially, their is no filter)
+   *
+   * Also, for each exercises, get corresponding labals and map it.
    */
   const loadData = async () => {
+    // Get all exercises
     const rawData = await getExercises();
-    console.log("BRUT", rawData);
 
     const data = await Promise.all(
       rawData.map(async (exo) => {
+        // Get corresponding labels
         const correspondingLabels = await getLabelsByExercise(exo.id);
+        // Add a labels filed to structure
         const ret: ExercisesWithLabelsType = {
           ...exo,
           labels: correspondingLabels || [],
         };
         return ret;
-      })
+      }),
     );
 
+    // Set exercises
     setExercises(data);
-    console.log(data);
     setFilteredExercises(data);
   };
 
@@ -128,8 +142,8 @@ export default function ManageExercisesScreen() {
             note={item.note}
             labels={item.labels}
             onDelete={async (id) => {
-              await deleteExercise(id); // Ta fonction de suppression en BDD
-              loadData(); // On rafraîchit la liste
+              await deleteExercise(id);
+              loadData();
             }}
           />
         )}

@@ -5,9 +5,12 @@ import { openDatabase } from './db';
  * @name addExercise
  * 
  * Add an exercise to the exercises table
+ * And for each labelID in labelsID, create an entry
+ * in the table for link between these two table
  * 
  * @param name Name of the exercise
  * @param note Note of the exercise
+ * @param labelsID List of labels ID linked ti this exercises
  * @returns Id of the inserted row
  */
 export const addExercise = async (name: string, note: string, labelsID: number[]) => {
@@ -37,11 +40,16 @@ export const getExercises = async () => {
     return await db.getAllAsync<ExercisesType>('SELECT * FROM exercises;');
 };
 
-
+/**
+ * @name deleteExercise
+ * 
+ * Delete the corresponding exercises from the database
+ * 
+ * @param id ID of the exercises we want to delete
+ */
 export const deleteExercise = async (id: number) => {
     const db = await openDatabase();
     try {
-        // Utilisation de runAsync pour les opérations de modification (DELETE, UPDATE, INSERT)
         await db.runAsync("DELETE FROM exercises WHERE id = ?;", [id]);
         console.log(`Exercice ${id} supprimé avec succès`);
     } catch (error) {

@@ -23,20 +23,24 @@ export const initDatabase = async () => {
   // Open connexion
   const db = await openDatabase();
 
-  // WARNING the lines bellow is to delete table 
+  // ----------------------
+  // WARNING this part is to delete table when I change there structure
   // (useful when changing structure of table)
   // If it is needed to keep the data in table,
   // please use ALTER TABLE
+
   // await db.execAsync('DROP TABLE IF EXISTS exercises;');
   // await db.execAsync('DROP TABLE IF EXISTS labels;');
   // await db.execAsync('DROP TABLE IF EXISTS exerciselabellink;');
+
+  // ----------------------
 
   // Creation of table
   // See description of table in dataType file
   await db.execAsync(`
     PRAGMA foreign_keys = ON;
     
-    -- Table des exercices
+    -- Exercises 
     CREATE TABLE IF NOT EXISTS exercises (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
@@ -44,13 +48,13 @@ export const initDatabase = async () => {
       isActive INTEGER DEFAULT 1
     );
   
-    -- Table des labels
+    -- Labels
     CREATE TABLE IF NOT EXISTS labels (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE
     );
 
-    -- Table de liaison (Table de jointure)
+    -- Link between Exercises and Labels
     CREATE TABLE IF NOT EXISTS exerciselabellink (
       exercise_id INTEGER NOT NULL,
       label_id INTEGER NOT NULL,

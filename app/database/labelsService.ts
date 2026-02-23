@@ -38,6 +38,5 @@ export const getLabelsByExercise = async (exoID: number): Promise<LabelType[]> =
     WHERE ell.exercise_id = ?
   `;
 
-    // Remplacer 'db' par ton instance de base de données
     return await db.getAllAsync(query, [exoID]);
 }

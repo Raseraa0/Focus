@@ -23,24 +23,29 @@ export default function CreateExerciseScreen() {
   // Note of the created exercise
   const [note, setNote] = useState("");
 
-  const [allLabels, setAllLabels] = useState<LabelType[]>([
-    // { name: "push", id: 3 },
-    // { name: "pull", id: 4 },
-    // { name: "leg", id: 5 },
-    // { name: "abdo", id: 6 },
-  ]);
+  // All labels from databse
+  const [allLabels, setAllLabels] = useState<LabelType[]>([]);
 
+  // Current selected labels 
   const [labels, setLabels] = useState<LabelType[]>([]);
 
+  // If popUp is shown (for label)
   const [showPopup, setShowPopup] = useState(false);
 
   // Router for navigation
   const router = useRouter();
 
+  // When the screen is created, load data
   useEffect(() => {
     loadLabels();
   }, []);
 
+  /**
+   * @name loadLabels
+   *
+   * Get all labels from databse and
+   * map it to labels list
+   */
   const loadLabels = async () => {
     const loadedLabels = await getLabels();
     setAllLabels(loadedLabels);
@@ -61,13 +66,17 @@ export default function CreateExerciseScreen() {
 
     // Add the exercise to the databse
     try {
-      const labelID = labels.map((item) => item.id);
-      await addExercise(name, note, labelID);
+      // Get the list of labels ID
+      const labelsID = labels.map((item) => item.id);
+
+      // Add the exercises
+      await addExercise(name, note, labelsID);
       Alert.alert("Succès", `L'exercice "${name}" a été créé !`, [
         { text: "Retour", onPress: () => router.back() },
         {
           text: "Créer un autre",
           onPress: () => {
+            // Clean area
             setName("");
             setNote("");
             setLabels([]);
