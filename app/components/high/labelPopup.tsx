@@ -61,7 +61,7 @@ export default function LabelPopup({
       setFilteredLabels(allLabels);
     } else {
       const filtered = labels.filter((item) =>
-        item.name.toLowerCase().includes(text.toLowerCase())
+        item.name.toLowerCase().includes(text.toLowerCase()),
       );
       setFilteredLabels(filtered);
     }
@@ -89,7 +89,6 @@ export default function LabelPopup({
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={styles.popup}
         >
-          {/* <View style={styles.popup}> */}
           <View style={styles.header}>
             <Text style={styles.title}>Labels</Text>
             <Close size={24} onPress={() => setShowPopup(false)}></Close>
@@ -137,7 +136,6 @@ export default function LabelPopup({
           )}
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
-      {/* </View> */}
     </Modal>
   );
 }

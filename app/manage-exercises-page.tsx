@@ -1,9 +1,9 @@
 import { deleteExercise, getExercises } from "@/app/database/exerciseService";
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import ActiveLabels from "./components/high/activeLabels";
-import ExercisesTile from "./components/high/exercisesTile";
-import LabelPopup from "./components/high/labelPopup";
+import ActiveLabels from "./components/high/ActiveLabels";
+import ExercisesTile from "./components/high/ExercisesTile";
+import LabelPopup from "./components/high/LabelPopup";
 import AddLabelButton from "./components/low/addLabelButton";
 import HeaderWithClose from "./components/low/header";
 import SearchBar from "./components/low/searchBar";

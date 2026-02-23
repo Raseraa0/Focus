@@ -2,8 +2,8 @@ import { addExercise } from "@/app/database/exerciseService";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
-import ActiveLabels from "./components/high/activeLabels";
-import LabelPopup from "./components/high/labelPopup";
+import ActiveLabels from "./components/high/ActiveLabels";
+import LabelPopup from "./components/high/LabelPopup";
 import AddLabelButton from "./components/low/addLabelButton";
 import HeaderWithClose from "./components/low/header";
 import InputValue from "./components/low/inputValue";
@@ -26,7 +26,7 @@ export default function CreateExerciseScreen() {
   // All labels from databse
   const [allLabels, setAllLabels] = useState<LabelType[]>([]);
 
-  // Current selected labels 
+  // Current selected labels
   const [labels, setLabels] = useState<LabelType[]>([]);
 
   // If popUp is shown (for label)
@@ -128,7 +128,7 @@ export default function CreateExerciseScreen() {
     </View>
   );
 }
-TODO factoriser ce qu'il y a actuellement en un maximum de composant
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
