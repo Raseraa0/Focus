@@ -1,244 +1,78 @@
-
-/**
- * @name ExercisesType
- * 
- * @table exercises
- * 
- * This table contains all informations relative
- * to exercises
- * 
- * @key id
- */
+/** Exercises stored in the database */
 export type ExercisesType = {
-
-    // Id of the exercise
     id: number;
-
-    // Name of the exercise
-    name: string
-
-    // Additional note to add comment if needed
-    note?: string
-
-    // Default value is 1, become 0 when the
-    // exercise is deleted, to keep informations
-    // for statistics
-    isActive: number;
-
+    name: string;
+    note?: string;          // optional extra info
+    isActive: number;       // 1 active, 0 soft-deleted
 }
 
 
-/**
- * @name LabelType
- * 
- * @table label
- * 
- * This table contains all informations relative 
- * to labels
- * 
- * @key id
- */
+/** Available labels to categorize exercises */
 export type LabelType = {
-
-    // Id of the label
     id: number;
-
-    // Name of the label
     name: string;
 }
 
 
-/**
- * @name ExerciseLabelLinkType
- * 
- * @table exerciselabellink
- * 
- * This table is to link exercises and labels with their IDs
- * 
- * @key exercise_id
- * @key label_id
- */
+/** Links exercises to labels (many-to-many) */
 export type ExerciseLabelLinkType = {
-
-    // Id of the exercise
     exercise_id: number;
-
-    // Id of the label
     label_id: number;
 }
 
 
-/**
- * @name PresetSessionType
- * 
- * @table presetsession
- * 
- * This table is the header table for preset session
- * 
- * @key id
- */
+/** Preset workout session templates */
 export type PresetSessionType = {
-
-    // Id of the preset
     id: number;
-
-    // Name of the preset
     name: string;
-
-    // Description of the preset of needed
     description: string;
-
-    // Default value is 1, become 0 when the
-    // session is deleted, to keep informations
-    // for statistics
-    isActive: number;
+    isActive: number;       // 1 active, 0 soft-deleted
 }
 
 
-/**
- * @name PresetSessionExerciseType
- * 
- * @table presetsessionexercise
- * 
- * This table is to know which exercise are in 
- * what session
- * 
- * @key preset_id
- * @key position
- */
+/** Exercises included in a preset session */
 export type PresetSessionExerciseType = {
-
-    // Id of the preset
     preset_id: number;
-
-    // Id of the exercise
     exercise_id: number;
-
-    // Position of the exercise in the set
-    position: number;
-
-    // Number of set of this exercise
-    setnr: number;
+    position: number;       // order in session
+    setnr: number;          // number of sets
 }
 
-/**
- * @name WorkoutType
- * 
- * @table workout
- * 
- * This table is the header table of workout
- * 
- * @key id
- */
+
+/** Workout session header */
 export type WorkoutType = {
-
-    // Id of the workout
     id: number;
-
-    // Date of the workout
     date: Date;
-
-    // Id of the selected preset for this workout
     preset_id: number;
-
-    // Status of the workout
-    // 1 for completed
-    // -1 for aborted
-    // 0 for draft 
-    status: number;
-
-    // Feeling about the workout
+    status: number;         // 1 done, 0 draft, -1 aborted
     global_feeling: string;
-
-    // Additional comment about the workout if needed
     note: string;
-
 }
 
 
-/**
- * @name WorkoutExerciseType
- * 
- * @table workoutexercise
- * 
- * This table is to know which exercise are in 
- * what workout
- * 
- * @key workout_exercise_id
- */
+/** Exercises performed during a workout */
 export type WorkoutExerciseType = {
-
-    // Id of the workout_exercise
     workout_exercise_id: number;
-
-    // Id of the workout
     workout_id: number;
-
-    // Position of the exercise in the workout
-    position: string;
-
-    // Id of the exercice
+    position: string;       // order in workout
     exercise_id: number;
-
-    // Additional comment if needed 
     note: string;
-
-    // 1 if they were pain during the exercice
-    // 0 otherwise
-    pain_flag: number;
-
+    pain_flag: number;      // 1 pain felt, 0 none
 }
 
 
-/**
- * @name SetPerformanceType
- * 
- * @table setperformance
- * 
- * This table is for data of each set of an exercise in
- * a workout
- * 
- * @key workout_exercise_id
- * @key set_index
- */
+/** Performance data for each set */
 export type SetPerformanceType = {
-
-    // Id of the workout
     workout_exercise_id: number;
-
-    // Index of the set in the exercise
     set_index: number;
-
-    // Number of reps
     reps: number;
-
-    // Weight
     weight: number;
-
-    // 1 if this set was completed
-    // 0 otherwise
-    completed: number;
-
+    completed: number;      // 1 completed, 0 failed
 }
 
 
-/**
- * @name DefaultDayPresetType
- * 
- * @table defaultdaypreset
- * 
- * This table is to link a favorite preset 
- * to a day of the week
- * 
- * @key day_of_week
- */
+/** Default preset linked to a weekday */
 export type DefaultDayPresetType = {
-
-    // Day of the week
-    // 1 for Monday; 2 for Tuesday;...
-    day_of_week: number;
-
-    // Id of the preset session
+    day_of_week: number;    // 1 Monday ... 7 Sunday
     preset_id: number;
-
-} 
+}
