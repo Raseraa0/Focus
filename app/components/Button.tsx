@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Keyboard, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 /**
  * Propreties
@@ -70,7 +70,13 @@ export function OpenPopupButton({
     <ButtonMy
       bgColor="blue"
       text={text}
-      onPress={() => setShowPopup(true)}
+      onPress={() => {
+        Keyboard.dismiss();
+        setTimeout(() => {
+          setShowPopup(true);
+        }, 100);
+        // setShowPopup(true);
+      }}
     ></ButtonMy>
   );
 }

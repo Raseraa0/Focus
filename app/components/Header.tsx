@@ -4,8 +4,13 @@ import { CloseGoBack } from "./Close";
 /**
  * Propreties
  */
-type Props = {
+type PropsheaderTitle = {
   title: string;
+};
+
+type PropsHeaderWithClose = {
+  title: string;
+  fieldCheck: string[];
 };
 
 /**
@@ -15,7 +20,7 @@ type Props = {
  *
  * @param title Text for the title
  */
-export function HeaderTitle({ title }: Props) {
+export function HeaderTitle({ title }: PropsheaderTitle) {
   return (
     <View>
       <Text style={styles.headerTitle}>{title}</Text>
@@ -31,11 +36,14 @@ export function HeaderTitle({ title }: Props) {
  *
  * @param title Text for the title
  */
-export default function HeaderWithClose({ title }: Props) {
+export default function HeaderWithClose({
+  title,
+  fieldCheck,
+}: PropsHeaderWithClose) {
   return (
     <View style={styles.header}>
       <HeaderTitle title={title} />
-      <CloseGoBack />
+      <CloseGoBack fieldCheck={fieldCheck} />
     </View>
   );
 }

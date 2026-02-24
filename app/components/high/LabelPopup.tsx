@@ -141,7 +141,8 @@ export default function LabelPopup({
 
 const styles = StyleSheet.create({
   modal: {
-    backgroundColor: "#0f172a",
+    flex: 1,
+    backgroundColor: "#fff",
   },
   header: {
     display: "flex",

@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { Alert, StyleSheet, TouchableOpacity } from "react-native";
 
 /**
  * Propreties
@@ -9,11 +9,13 @@ type PropsClose = {
   size?: number;
   color?: string;
   onPress: () => void;
+  fieldCheck: string[];
 };
 
 type PropsCloseGoBack = {
   size?: number;
   color?: string;
+  fieldCheck: string[];
 };
 
 /**
@@ -30,10 +32,29 @@ export default function Close({
   size = 28,
   color = "#000",
   onPress,
+  fieldCheck,
 }: PropsClose) {
-  // Router for navigation
+  const checkThenPress = () => {
+    const found = fieldCheck.some((item) => item && item.length > 0);
+
+    if (!found) {
+      onPress();
+    } else {
+      Alert.alert(
+        "Attention",
+        "Les données non sauvegardé seront perdu voulez vous quitter ?",
+        [
+          { text: "Oui", onPress: onPress },
+          {
+            text: "Non",
+          },
+        ]
+      );
+    }
+  };
+
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity style={styles.button} onPress={checkThenPress}>
       <Ionicons name="close-circle-outline" size={size} color={color} />
     </TouchableOpacity>
   );
@@ -46,13 +67,20 @@ export default function Close({
  * action
  *
  */
-export function CloseGoBack({ size, color }: PropsCloseGoBack) {
+export function CloseGoBack({ size, color, fieldCheck }: PropsCloseGoBack) {
   const router = useRouter();
   const goBack = () => {
     router.back();
   };
 
-  return <Close size={size} color={color} onPress={goBack}></Close>;
+  return (
+    <Close
+      size={size}
+      color={color}
+      fieldCheck={fieldCheck}
+      onPress={goBack}
+    ></Close>
+  );
 }
 
 /**

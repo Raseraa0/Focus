@@ -9,6 +9,14 @@ import LabelPopup from "./components/high/LabelPopup";
 import { InputValue } from "./components/InputArea";
 import { LabelType } from "./database/dataType";
 import { getLabels } from "./database/labelsService";
+import { createComponentForStaticNavigation } from "@react-navigation/native";
+
+
+TODO essayer de moin factoriser genre la la confirmation de retour a lacceuil c catastrophique
+TODO créer un dossier dans lequels je mettrais toutes les fonctions (enfin la plupart)
+TODO et comme ca dans tt mes composant je reutilise les fonction
+TODO mais la c trop factorisé, genre même les header with close c'est trop en vrai, repasser sur chaque page une par une et essayer de moin factoriser
+TODO mais tt de meme mettre dans des fichier différetns
 
 /**
  * @name CreateExerciseScreen
@@ -90,7 +98,7 @@ export default function CreateExerciseScreen() {
 
   return (
     <View style={styles.container}>
-      <HeaderWithClose title="Nouvel Exercice" />
+      <HeaderWithClose title="Nouvel Exercice" fieldCheck={[name, note]} />
       <View style={styles.wrapper}>
         <View style={styles.content}>
           <InputValue
