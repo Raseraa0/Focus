@@ -14,10 +14,9 @@ import {
 } from "react-native";
 import { LabelType } from "../../database/dataType";
 import { addLabel, getLabels } from "../../database/labelsService";
-import Close from "../low/close";
-import InputValue from "../low/inputValue";
-import SaveButton from "../low/saveButton";
-import SearchBar from "../low/searchBar";
+import { SaveButton } from "../Button";
+import Close from "../Close";
+import { InputValue, SearchInput } from "../InputArea";
 
 type Props = {
   allLabels: LabelType[];
@@ -61,7 +60,7 @@ export default function LabelPopup({
       setFilteredLabels(allLabels);
     } else {
       const filtered = labels.filter((item) =>
-        item.name.toLowerCase().includes(text.toLowerCase()),
+        item.name.toLowerCase().includes(text.toLowerCase())
       );
       setFilteredLabels(filtered);
     }
@@ -94,7 +93,7 @@ export default function LabelPopup({
             <Close size={24} onPress={() => setShowPopup(false)}></Close>
           </View>
 
-          <SearchBar
+          <SearchInput
             value={search}
             placeHolder="Rechercher un label..."
             handleSearch={handleSearch}
@@ -127,9 +126,9 @@ export default function LabelPopup({
             <View>
               <Text>{errorMessage}</Text>
               <InputValue
-                name={newLabel}
+                value={newLabel}
                 placeHolder="New label"
-                setName={setNewLabel}
+                onChangeText={setNewLabel}
               />
               <SaveButton onPress={saveNewLabel} />
             </View>

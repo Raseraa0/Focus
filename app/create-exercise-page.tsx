@@ -2,12 +2,11 @@ import { addExercise } from "@/app/database/exerciseService";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
+import { OpenPopupButton, SaveButton } from "./components/Button";
+import HeaderWithClose from "./components/Header";
 import ActiveLabels from "./components/high/ActiveLabels";
 import LabelPopup from "./components/high/LabelPopup";
-import AddLabelButton from "./components/low/addLabelButton";
-import HeaderWithClose from "./components/low/header";
-import InputValue from "./components/low/inputValue";
-import SaveButton from "./components/low/saveButton";
+import { InputValue } from "./components/InputArea";
 import { LabelType } from "./database/dataType";
 import { getLabels } from "./database/labelsService";
 
@@ -95,23 +94,26 @@ export default function CreateExerciseScreen() {
       <View style={styles.wrapper}>
         <View style={styles.content}>
           <InputValue
-            name={name}
-            setName={setName}
+            value={name}
+            onChangeText={setName}
             placeHolder="Ex : Développé couché"
             label="Nom de l'exercice"
             autoFocus={true}
           ></InputValue>
 
           <InputValue
-            name={note}
-            setName={setNote}
+            value={note}
+            onChangeText={setNote}
             placeHolder="..."
             label="Information supplémentaire"
             numberOfLines={4}
           ></InputValue>
 
           <ActiveLabels labels={labels} setLabels={setLabels} />
-          <AddLabelButton text="Ajouter un label" setShowPopup={setShowPopup} />
+          <OpenPopupButton
+            text="Ajouter un label"
+            setShowPopup={setShowPopup}
+          />
         </View>
         <SaveButton onPress={handleSave} />
       </View>

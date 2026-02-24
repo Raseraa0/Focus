@@ -62,7 +62,7 @@ export function SaveButton({ onPress }: PropsSaveButton) {
  * Button for saving
  *
  */
-export function openPopupButton({
+export function OpenPopupButton({
   setShowPopup,
   text = "",
 }: PropsOpenPopupButton) {

@@ -1,12 +1,12 @@
 import { deleteExercise, getExercises } from "@/app/database/exerciseService";
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
+import { OpenPopupButton } from "./components/Button";
+import HeaderWithClose from "./components/Header";
 import ActiveLabels from "./components/high/ActiveLabels";
 import ExercisesTile from "./components/high/ExercisesTile";
 import LabelPopup from "./components/high/LabelPopup";
-import AddLabelButton from "./components/low/addLabelButton";
-import HeaderWithClose from "./components/low/header";
-import SearchBar from "./components/low/searchBar";
+import { SearchInput } from "./components/InputArea";
 import { LabelType } from "./database/dataType";
 import { ExercisesWithLabelsType } from "./database/joinDateType";
 import { getLabels, getLabelsByExercise } from "./database/labelsService";
@@ -50,7 +50,7 @@ export default function ManageExercisesScreen() {
       const matchesLabels =
         labels.length === 0 ||
         labels.every((filterLabel) =>
-          item.labels.some((exoLabel) => exoLabel.id === filterLabel.id),
+          item.labels.some((exoLabel) => exoLabel.id === filterLabel.id)
         );
 
       return matchesText && matchesLabels;
@@ -100,7 +100,7 @@ export default function ManageExercisesScreen() {
           labels: correspondingLabels || [],
         };
         return ret;
-      }),
+      })
     );
 
     // Set exercises
@@ -119,16 +119,16 @@ export default function ManageExercisesScreen() {
   return (
     <View style={styles.container}>
       <HeaderWithClose title="Tous les exercices" />
-      <SearchBar
+      <SearchInput
         value={search}
         placeHolder="Rechercher un exercice..."
         handleSearch={handleSearch}
       />
 
-      <AddLabelButton
+      <OpenPopupButton
         text="Filter par label"
         setShowPopup={setShowPopup}
-      ></AddLabelButton>
+      ></OpenPopupButton>
       <ActiveLabels labels={labels} setLabels={setLabels} />
 
       <FlatList

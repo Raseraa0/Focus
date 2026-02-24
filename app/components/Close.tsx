@@ -11,6 +11,11 @@ type PropsClose = {
   onPress: () => void;
 };
 
+type PropsCloseGoBack = {
+  size?: number;
+  color?: string;
+};
+
 /**
  * @name Close
  *
@@ -41,7 +46,7 @@ export default function Close({
  * action
  *
  */
-export function CloseGoBack() {
+export function CloseGoBack({ size, color }: PropsCloseGoBack) {
   const router = useRouter();
   const goBack = () => {
     router.back();

@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
+import { CloseGoBack } from "./Close";
 
 /**
  * Propreties
