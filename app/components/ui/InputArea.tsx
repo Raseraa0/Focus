@@ -1,4 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
 /**
@@ -12,14 +11,6 @@ type PropsInputValue = {
   autoFocus?: boolean;
   numberOfLines?: number;
   isSearch?: boolean;
-};
-
-type PropsSearchInput = {
-  value: string;
-  handleSearch: (arg0: string) => void;
-  label?: string;
-  placeHolder?: string;
-  autoFocus?: boolean;
 };
 
 /**
@@ -58,35 +49,6 @@ export function InputValue({
         // multiline={numberOfLines !== 1}
         numberOfLines={numberOfLines}
         textAlignVertical="top"
-      />
-    </View>
-  );
-}
-
-/**
- * @name SearchInput
- *
- *
- */
-export function SearchInput({
-  value,
-  handleSearch,
-  placeHolder,
-}: PropsSearchInput) {
-  return (
-    <View style={styles.searchContainer}>
-      <Ionicons
-        name="search"
-        size={20}
-        color="#888"
-        style={styles.searchIcon}
-      />
-      <TextInput
-        style={styles.searchInput}
-        placeholder={placeHolder}
-        value={value}
-        onChangeText={handleSearch} // Filtre en temps réel
-        clearButtonMode="while-editing" // Optionnel (iOS seulement)
       />
     </View>
   );

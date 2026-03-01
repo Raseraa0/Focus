@@ -12,11 +12,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { LabelType } from "../../database/dataType";
-import { addLabel, getLabels } from "../../database/labelsService";
-import { SaveButton } from "../Button";
-import Close from "../Close";
-import { InputValue, SearchInput } from "../InputArea";
+import { LabelType } from "../database/dataType";
+import { addLabel, getLabels } from "../database/labelsService";
+import { textFilterLab } from "../utils/textFilterLab";
+import { ButtonMy } from "./ui/Button";
+import Close from "./ui/Close";
+import { InputValue } from "./ui/InputArea";
+import { SearchInput } from "./ui/SearchInput";
 
 type Props = {
   allLabels: LabelType[];
@@ -56,14 +58,9 @@ export default function LabelPopup({
   const handleSearch = (text: string) => {
     setSearch(text);
 
-    if (text.trim() === "") {
-      setFilteredLabels(allLabels);
-    } else {
-      const filtered = labels.filter((item) =>
-        item.name.toLowerCase().includes(text.toLowerCase())
-      );
-      setFilteredLabels(filtered);
-    }
+    const filtered = textFilterLab(allLabels, text);
+    console.log(filtered);
+    setFilteredLabels(filtered);
   };
 
   const saveNewLabel = async () => {
@@ -130,7 +127,7 @@ export default function LabelPopup({
                 placeHolder="New label"
                 onChangeText={setNewLabel}
               />
-              <SaveButton onPress={saveNewLabel} />
+              <ButtonMy text="Nouveau label" onPress={saveNewLabel} />
             </View>
           )}
         </KeyboardAvoidingView>

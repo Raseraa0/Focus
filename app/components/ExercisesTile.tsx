@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { ExercisesWithLabelsType } from "../../database/joinDateType";
+import { ExercisesWithLabelsType } from "../database/joinDateType";
 
 interface ExercisesTileProps extends ExercisesWithLabelsType {
   onDelete?: (id: number) => void;

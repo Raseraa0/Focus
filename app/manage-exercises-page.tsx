@@ -1,15 +1,28 @@
 import { deleteExercise, getExercises } from "@/app/database/exerciseService";
-import { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import { OpenPopupButton } from "./components/Button";
-import HeaderWithClose from "./components/Header";
-import ActiveLabels from "./components/high/ActiveLabels";
-import ExercisesTile from "./components/high/ExercisesTile";
-import LabelPopup from "./components/high/LabelPopup";
-import { SearchInput } from "./components/InputArea";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
+import {
+  FlatList,
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import ActiveLabels from "./components/ActiveLabels";
+import ExercisesTile from "./components/ExercisesTile";
+import LabelPopup from "./components/LabelPopup";
+import { ButtonMy } from "./components/ui/Button";
+import Close from "./components/ui/Close";
+import { HeaderTitle } from "./components/ui/Header";
+import { SearchInput } from "./components/ui/SearchInput";
 import { LabelType } from "./database/dataType";
 import { ExercisesWithLabelsType } from "./database/joinDateType";
 import { getLabels, getLabelsByExercise } from "./database/labelsService";
+import { askConfirmation } from "./utils/askConfirmation";
+import { goBack } from "./utils/goBack";
+import { labelsFilterEx } from "./utils/labelsFilterEx";
+import { textFilterEx } from "./utils/textFilterEx";
 
 /**
  * @name ManageExercisesScreen
@@ -37,34 +50,28 @@ export default function ManageExercisesScreen() {
     ExercisesWithLabelsType[]
   >([]);
 
+  const router = useRouter();
+
   // Every time a filter change (search or labels)
   // We are updating the shown exercices
   useEffect(() => {
-    const query = search.toLowerCase().trim();
-
-    const filtered = exercises.filter((item) => {
-      // Must contains text as substring
-      const matchesText = item.name.toLowerCase().includes(query);
-
-      // Must contains all labels
-      const matchesLabels =
-        labels.length === 0 ||
-        labels.every((filterLabel) =>
-          item.labels.some((exoLabel) => exoLabel.id === filterLabel.id)
-        );
-
-      return matchesText && matchesLabels;
-    });
-
-    // Set shown exercises
-    setFilteredExercises(filtered);
+    const filtered1 = textFilterEx(exercises, search);
+    const filtered2 = labelsFilterEx(filtered1, labels);
+    setFilteredExercises(filtered2);
   }, [search, labels, exercises]);
 
   // When the screen is created, load data
-  useEffect(() => {
-    loadData();
-    loadLabels();
-  }, []);
+  // useEffect(() => {
+  //   loadData();
+  //   loadLabels();
+  // }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadData(); // Ta fonction qui récupère les exercices en base
+      loadLabels();
+    }, [])
+  );
 
   /**
    * @name loadLabels
@@ -118,34 +125,55 @@ export default function ManageExercisesScreen() {
 
   return (
     <View style={styles.container}>
-      <HeaderWithClose title="Tous les exercices" />
+      <View style={styles.header}>
+        <HeaderTitle title={"Tous les exercices"} />
+        <Close onPress={() => goBack(router)} />
+      </View>
       <SearchInput
         value={search}
         placeHolder="Rechercher un exercice..."
         handleSearch={handleSearch}
       />
 
-      <OpenPopupButton
+      <ButtonMy
         text="Filter par label"
-        setShowPopup={setShowPopup}
-      ></OpenPopupButton>
+        onPress={() => {
+          Keyboard.dismiss();
+          setTimeout(() => {
+            setShowPopup(true);
+          }, 100);
+          setShowPopup(true);
+        }}
+      ></ButtonMy>
       <ActiveLabels labels={labels} setLabels={setLabels} />
 
       <FlatList
         data={filteredExercises}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <ExercisesTile
-            id={item.id}
-            isActive={item.isActive}
-            name={item.name}
-            note={item.note}
-            labels={item.labels}
-            onDelete={async (id) => {
-              await deleteExercise(id);
-              loadData();
-            }}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              router.push({
+                pathname: "/edit-exercise-page",
+                params: { exercise: JSON.stringify(item) },
+              })
+            }
+          >
+            <ExercisesTile
+              id={item.id}
+              isActive={item.isActive}
+              name={item.name}
+              note={item.note}
+              labels={item.labels}
+              onDelete={async (id) => {
+                const confirmed = await askConfirmation();
+                if (confirmed) {
+                  await deleteExercise(id);
+                  loadData();
+                }
+              }}
+            ></ExercisesTile>
+          </TouchableOpacity>
         )}
         ListEmptyComponent={
           <Text style={styles.emptyText}>Aucun exercice trouvé</Text>
@@ -180,4 +208,12 @@ const styles = StyleSheet.create({
   },
   itemText: { fontSize: 17, color: "#333" },
   emptyText: { textAlign: "center", marginTop: 50, color: "#999" },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: 60,
+    paddingBottom: 20,
+  },
 });

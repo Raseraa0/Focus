@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View } from "react-native";
-import { CloseGoBack } from "./Close";
 
 /**
  * Propreties
@@ -36,17 +35,17 @@ export function HeaderTitle({ title }: PropsheaderTitle) {
  *
  * @param title Text for the title
  */
-export default function HeaderWithClose({
-  title,
-  fieldCheck,
-}: PropsHeaderWithClose) {
-  return (
-    <View style={styles.header}>
-      <HeaderTitle title={title} />
-      <CloseGoBack fieldCheck={fieldCheck} />
-    </View>
-  );
-}
+// export default function HeaderWithClose({
+//   title,
+//   fieldCheck,
+// }: PropsHeaderWithClose) {
+//   return (
+//     <View style={styles.header}>
+//       <HeaderTitle title={title} />
+//       <CloseGoBack fieldCheck={fieldCheck} />
+//     </View>
+//   );
+// }
 
 /**
  * StyleSheet

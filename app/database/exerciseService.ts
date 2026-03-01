@@ -57,3 +57,30 @@ export const deleteExercise = async (id: number) => {
         throw error;
     }
 };
+
+
+export const updateExercise = async (exerciseID: number, name: string, note: string, labelsID: number[]) => {
+    const db = await openDatabase();
+
+    // 1. Mettre à jour les informations de base de l'exercice
+    await db.runAsync(
+        'UPDATE exercises SET name = ?, note = ? WHERE id = ?;',
+        [name, note, exerciseID]
+    );
+
+    // 2. Supprimer tous les anciens liens de labels pour cet exercice
+    // C'est plus simple que de calculer les différences (ajouts/suppressions)
+    await db.runAsync('DELETE FROM exerciselabellink WHERE exercise_id = ?;', [exerciseID]);
+
+    // 3. Insérer les nouveaux liens de labels
+    const promises = labelsID.map(async (labelId) => {
+        await db.runAsync(
+            'INSERT INTO exerciselabellink (exercise_id, label_id) VALUES (?, ?);',
+            [exerciseID, labelId]
+        );
+    });
+
+    await Promise.all(promises);
+
+    return true;
+};

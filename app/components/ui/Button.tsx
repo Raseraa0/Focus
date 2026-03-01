@@ -1,4 +1,4 @@
-import { Keyboard, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 /**
  * Propreties
@@ -50,11 +50,11 @@ export function ButtonMy({ text = "", bgColor = "", onPress }: PropsButtonMy) {
  * Button for saving
  *
  */
-export function SaveButton({ onPress }: PropsSaveButton) {
-  return (
-    <ButtonMy bgColor="green" text="Sauvegarder" onPress={onPress}></ButtonMy>
-  );
-}
+// export function SaveButton({ onPress }: PropsSaveButton) {
+//   return (
+//     <ButtonMy bgColor="green" text="Sauvegarder" onPress={onPress}></ButtonMy>
+//   );
+// }
 
 /**
  * @name openPopupButton
@@ -62,24 +62,24 @@ export function SaveButton({ onPress }: PropsSaveButton) {
  * Button for saving
  *
  */
-export function OpenPopupButton({
-  setShowPopup,
-  text = "",
-}: PropsOpenPopupButton) {
-  return (
-    <ButtonMy
-      bgColor="blue"
-      text={text}
-      onPress={() => {
-        Keyboard.dismiss();
-        setTimeout(() => {
-          setShowPopup(true);
-        }, 100);
-        // setShowPopup(true);
-      }}
-    ></ButtonMy>
-  );
-}
+// export function OpenPopupButton({
+//   setShowPopup,
+//   text = "",
+// }: PropsOpenPopupButton) {
+//   return (
+//     <ButtonMy
+//       bgColor="blue"
+//       text={text}
+//       onPress={() => {
+//         Keyboard.dismiss();
+//         setTimeout(() => {
+//           setShowPopup(true);
+//         }, 100);
+//         // setShowPopup(true);
+//       }}
+//     ></ButtonMy>
+//   );
+// }
 
 /**
  * StyleSheet
