@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Alert, Keyboard, ScrollView, StyleSheet, View } from "react-native";
 import AddedExercises from "./components/AddedExercises";
@@ -8,17 +8,26 @@ import Close from "./components/ui/Close";
 import { HeaderTitle } from "./components/ui/Header";
 import { InputValue } from "./components/ui/InputArea";
 import { getExercisesWithLabels } from "./database/exerciseService";
-import { ExercisesExpandType } from "./database/otherDataType";
-import { addSession } from "./database/sessionService";
-import { checkThenDo } from "./utils/checkThenDo";
+import {
+  ExercisesExpandType,
+  PresetSessionsExpandType,
+} from "./database/otherDataType";
+import { updateSession } from "./database/sessionService";
 import { goBack } from "./utils/goBack";
 
-export default function CreateSessionScreen() {
-  const [name, setName] = useState("");
+export default function EditSessionScreen() {
+  const params = useLocalSearchParams();
+  const sessionData = JSON.parse(
+    params.session as string
+  ) as PresetSessionsExpandType;
 
-  const [note, setNote] = useState("");
+  const [name, setName] = useState(sessionData.name);
 
-  const [exercises, setExercises] = useState<ExercisesExpandType[]>([]);
+  const [note, setNote] = useState(sessionData.note);
+
+  const [exercises, setExercises] = useState<ExercisesExpandType[]>(
+    sessionData.exercises
+  );
 
   const [allExercises, setAllExercises] = useState<ExercisesExpandType[]>([]);
 
@@ -35,13 +44,35 @@ export default function CreateSessionScreen() {
     setAllExercises(loadedExercises);
   };
 
+  const checkDiffEx = () => {
+    const isNameSame = sessionData.name === name;
+    const isNoteSame = sessionData.note === note;
+
+    // Comparaison profonde simple pour les IDs de labels
+    const oldIds =
+      sessionData.exercises
+        ?.map((l) => l.id)
+        .sort()
+        .join(",") || "";
+    const newIds =
+      exercises
+        .map((l) => l.id)
+        .sort()
+        .join(",") || "";
+    const isLabelsSame = oldIds === newIds;
+
+    // Retourne TRUE si TOUT est identique (pas de changement)
+    return isNameSame && isNoteSame && isLabelsSame;
+  };
+
   const handleSave = async () => {
     if (name.trim().length === 0) {
       Alert.alert("Erreur", "Le nom de la session ne peut pas être vide.");
       return;
     }
 
-    const sessionData = {
+    // Préparation des données formatées
+    const updatedData = {
       name: name,
       note: note,
       exercises: exercises.map((ex) => ({
@@ -51,23 +82,20 @@ export default function CreateSessionScreen() {
     };
 
     try {
-      // Add the exercises
-      await addSession(sessionData);
-      Alert.alert("Succès", `La session "${name}" a été créée !`, [
-        { text: "Retour", onPress: () => router.back() },
-        {
-          text: "Créer un autre",
-          onPress: () => {
-            // Clean area
-            setName("");
-            setNote("");
-            setExercises([]);
-          },
-        },
+      if (checkDiffEx()) {
+        goBack(router);
+        return;
+      }
+
+      // APPEL DE L'UPDATE au lieu de ADD
+      await updateSession(sessionData.id, updatedData);
+
+      Alert.alert("Succès", `La session "${name}" a été mise à jour !`, [
+        { text: "OK", onPress: () => router.back() },
       ]);
     } catch (error) {
       console.error(error);
-      Alert.alert("Erreur", "Impossible d'enregistrer la session.");
+      Alert.alert("Erreur", "Impossible de mettre à jour la session.");
     }
   };
 
@@ -76,7 +104,22 @@ export default function CreateSessionScreen() {
       <View style={styles.header}>
         <HeaderTitle title={"Nouvel Session"} />
         <Close
-          onPress={() => checkThenDo([name, note], () => goBack(router))}
+          onPress={() => {
+            if (!checkDiffEx()) {
+              Alert.alert(
+                "Attention",
+                "Les données non sauvegardé seront perdu voulez vous quitter ?",
+                [
+                  { text: "Oui", onPress: () => goBack(router) },
+                  {
+                    text: "Non",
+                  },
+                ]
+              );
+            } else {
+              goBack(router);
+            }
+          }}
         />
       </View>
       <View style={styles.wrapper}>

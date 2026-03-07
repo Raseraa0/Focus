@@ -1,7 +1,7 @@
-import { ExercisesWithLabelsType } from "../database/joinDateType";
+import { ExercisesExpandType } from "../database/otherDataType";
 
 
-export const textFilterEx = (exercises: ExercisesWithLabelsType[], text: string) => {
+export const textFilterEx = (exercises: ExercisesExpandType[], text: string) => {
 
     const lowerText = text.toLowerCase().trim();
 

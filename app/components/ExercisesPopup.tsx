@@ -12,68 +12,77 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { LabelType } from "../database/dataType";
-import { addLabel, getLabels } from "../database/labelsService";
-import { textFilterLab } from "../utils/textFilterLab";
+import {
+  addExercise,
+  getExercisesWithLabels,
+} from "../database/exerciseService";
+import { ExercisesExpandType } from "../database/otherDataType";
+import { textFilterEx } from "../utils/textFilterEx";
 import { ButtonMy } from "./ui/Button";
 import Close from "./ui/Close";
 import { InputValue } from "./ui/InputArea";
 import { SearchInput } from "./ui/SearchInput";
 
 type Props = {
-  allLabels: LabelType[];
-  setAllLabels: (arg0: LabelType[]) => void;
-  labels: LabelType[];
-  setLabels: (arg0: LabelType[]) => void;
+  allExercises: ExercisesExpandType[];
+  setAllExercises: (arg0: ExercisesExpandType[]) => void;
+  exercises: ExercisesExpandType[];
+  setExercises: (arg0: ExercisesExpandType[]) => void;
   setShowPopup: (arg0: boolean) => void;
-  canAddLabel: boolean;
+  canAddExercise: boolean;
 };
 
-export default function LabelPopup({
-  allLabels,
-  setAllLabels,
-  labels,
-  setLabels,
+export default function ExercisesPopup({
+  allExercises,
+  setAllExercises,
+  exercises,
+  setExercises,
   setShowPopup,
-  canAddLabel,
+  canAddExercise,
 }: Props) {
-  const onPressItem = (item: LabelType) => {
-    setLabels(labels.concat(item));
+  const onPressItem = (item: ExercisesExpandType) => {
+    setExercises(exercises.concat(item));
     setShowPopup(false);
   };
 
-  const loadLabels = async () => {
-    const loadedLabels = await getLabels();
-    setAllLabels(loadedLabels);
+  const loadExercises = async () => {
+    const loadedExercises = await getExercisesWithLabels();
+    setAllExercises(loadedExercises);
   };
 
-  const [newLabel, setNewLabel] = useState("");
+  const [newExerciseName, setNewExerciseName] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
 
   const [search, setSearch] = useState("");
 
-  const [filteredLabels, setFilteredLabels] = useState<LabelType[]>(allLabels);
+  const [filteredExercises, setFilteredExercises] =
+    useState<ExercisesExpandType[]>(allExercises);
 
   const handleSearch = (text: string) => {
     setSearch(text);
 
-    const filtered = textFilterLab(allLabels, text);
-    setFilteredLabels(filtered);
+    const filtered = textFilterEx(allExercises, text);
+    setFilteredExercises(filtered);
   };
 
-  const saveNewLabel = async () => {
-    if (newLabel.trim() !== "") {
-      let labelID: number;
+  const saveNewExercise = async () => {
+    if (newExerciseName.trim() !== "") {
+      let exerciseID: number;
       try {
-        labelID = await addLabel(newLabel);
+        exerciseID = await addExercise(newExerciseName, "", []);
       } catch (e) {
-        const mess: string = "Le label " + newLabel + " existe déjà.";
+        const mess: string = "L'exercice " + newExerciseName + " existe déjà.";
         setErrorMessage(mess);
         return;
       }
-      onPressItem({ id: labelID, name: newLabel });
-      loadLabels();
+      onPressItem({
+        id: exerciseID,
+        name: newExerciseName,
+        isActive: 1,
+        labels: [],
+      });
+      loadExercises();
     }
   };
 
@@ -85,29 +94,29 @@ export default function LabelPopup({
           style={styles.popup}
         >
           <View style={styles.header}>
-            <Text style={styles.title}>Labels</Text>
+            <Text style={styles.title}>Exercises</Text>
             <Close size={24} onPress={() => setShowPopup(false)}></Close>
           </View>
 
           <SearchInput
             value={search}
-            placeHolder="Rechercher un label..."
+            placeHolder="Rechercher un exercises..."
             handleSearch={handleSearch}
           />
           <FlatList
             style={styles.content}
-            data={filteredLabels}
+            data={filteredExercises.filter((item) => item.isActive === 1)}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
               <TouchableOpacity
                 style={
-                  labels.some((item2) => {
+                  exercises.some((item2) => {
                     return item2.id === item.id;
                   })
                     ? styles.itemOff
                     : styles.item
                 }
-                disabled={labels.some((item2) => {
+                disabled={exercises.some((item2) => {
                   return item2.id === item.id;
                 })}
                 onPress={() => onPressItem(item)}
@@ -116,17 +125,19 @@ export default function LabelPopup({
                 <Ionicons name="add-circle-outline" size={26}></Ionicons>
               </TouchableOpacity>
             )}
-            ListEmptyComponent={<Text style={styles.noitem}>Aucun Label</Text>}
+            ListEmptyComponent={
+              <Text style={styles.noitem}>Aucun Exercice</Text>
+            }
           ></FlatList>
-          {canAddLabel && (
+          {canAddExercise && (
             <View>
               <Text>{errorMessage}</Text>
               <InputValue
-                value={newLabel}
-                placeHolder="New label"
-                onChangeText={setNewLabel}
+                value={newExerciseName}
+                placeHolder="New Exercise"
+                onChangeText={setNewExerciseName}
               />
-              <ButtonMy text="Nouveau label" onPress={saveNewLabel} />
+              <ButtonMy text="Nouveau exercice" onPress={saveNewExercise} />
             </View>
           )}
         </KeyboardAvoidingView>

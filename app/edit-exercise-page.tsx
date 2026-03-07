@@ -9,18 +9,18 @@ import { HeaderTitle } from "./components/ui/Header";
 import { InputValue } from "./components/ui/InputArea";
 import { LabelType } from "./database/dataType";
 import { updateExercise } from "./database/exerciseService";
-import { ExercisesWithLabelsType } from "./database/joinDateType";
 import { getLabels } from "./database/labelsService";
+import { ExercisesExpandType } from "./database/otherDataType";
 import { goBack } from "./utils/goBack";
 
 /**
- * @name CreateExerciseScreen
+ * @name EditExerciseScreen
  */
 export default function EditExerciseScreen() {
   const params = useLocalSearchParams();
   const exerciseData = JSON.parse(
     params.exercise as string
-  ) as ExercisesWithLabelsType;
+  ) as ExercisesExpandType;
 
   // Name of the created exercise
   const [name, setName] = useState(exerciseData.name || "");

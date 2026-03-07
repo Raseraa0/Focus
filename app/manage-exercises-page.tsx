@@ -1,4 +1,7 @@
-import { deleteExercise, getExercises } from "@/app/database/exerciseService";
+import {
+  deleteExercise,
+  getExercisesWithLabels,
+} from "@/app/database/exerciseService";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -17,8 +20,8 @@ import Close from "./components/ui/Close";
 import { HeaderTitle } from "./components/ui/Header";
 import { SearchInput } from "./components/ui/SearchInput";
 import { LabelType } from "./database/dataType";
-import { ExercisesWithLabelsType } from "./database/joinDateType";
-import { getLabels, getLabelsByExercise } from "./database/labelsService";
+import { getLabels } from "./database/labelsService";
+import { ExercisesExpandType } from "./database/otherDataType";
 import { askConfirmation } from "./utils/askConfirmation";
 import { goBack } from "./utils/goBack";
 import { labelsFilterEx } from "./utils/labelsFilterEx";
@@ -34,7 +37,7 @@ export default function ManageExercisesScreen() {
   const [search, setSearch] = useState("");
 
   // All exercises from database
-  const [exercises, setExercises] = useState<ExercisesWithLabelsType[]>([]);
+  const [exercises, setExercises] = useState<ExercisesExpandType[]>([]);
 
   // If popUp is shown (for label)
   const [showPopup, setShowPopup] = useState(false);
@@ -47,7 +50,7 @@ export default function ManageExercisesScreen() {
 
   // Shown exercises (with applying filters)
   const [filteredExercises, setFilteredExercises] = useState<
-    ExercisesWithLabelsType[]
+    ExercisesExpandType[]
   >([]);
 
   const router = useRouter();
@@ -94,21 +97,7 @@ export default function ManageExercisesScreen() {
    * Also, for each exercises, get corresponding labals and map it.
    */
   const loadData = async () => {
-    // Get all exercises
-    const rawData = await getExercises();
-
-    const data = await Promise.all(
-      rawData.map(async (exo) => {
-        // Get corresponding labels
-        const correspondingLabels = await getLabelsByExercise(exo.id);
-        // Add a labels filed to structure
-        const ret: ExercisesWithLabelsType = {
-          ...exo,
-          labels: correspondingLabels || [],
-        };
-        return ret;
-      })
-    );
+    const data = await getExercisesWithLabels();
 
     // Set exercises
     setExercises(data);

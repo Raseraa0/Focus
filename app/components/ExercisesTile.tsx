@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { ExercisesWithLabelsType } from "../database/joinDateType";
+import { ExercisesExpandType } from "../database/otherDataType";
 
-interface ExercisesTileProps extends ExercisesWithLabelsType {
+interface ExercisesTileProps extends ExercisesExpandType {
   onDelete?: (id: number) => void;
 }
 
@@ -22,29 +22,31 @@ interface ExercisesTileProps extends ExercisesWithLabelsType {
  */
 export default function ExercisesTile(item: ExercisesTileProps) {
   return (
-    <View key={item.id} style={styles.card}>
-      <View style={styles.cardInfo}>
-        <Text style={styles.exerciseName}>{item.name}</Text>
-        {item.note ? (
-          <Text style={styles.exerciseNote}>{item.note}</Text>
-        ) : (
-          <Text style={styles.noNote}>Aucune note</Text>
-        )}
-        <FlatList
-          data={item.labels}
-          keyExtractor={(labelItem) => labelItem.id.toString()}
-          renderItem={({ item }) => (
-            <Text style={styles.labelText}>{item.name}</Text>
+    item.isActive === 1 && (
+      <View key={item.id} style={styles.card}>
+        <View style={styles.cardInfo}>
+          <Text style={styles.exerciseName}>{item.name}</Text>
+          {item.note ? (
+            <Text style={styles.exerciseNote}>{item.note}</Text>
+          ) : (
+            <Text style={styles.noNote}>Aucune note</Text>
           )}
-        ></FlatList>
+          <FlatList
+            data={item.labels}
+            keyExtractor={(labelItem) => labelItem.id.toString()}
+            renderItem={({ item }) => (
+              <Text style={styles.labelText}>{item.name}</Text>
+            )}
+          ></FlatList>
+        </View>
+        <TouchableOpacity
+          onPress={() => item.onDelete && item.onDelete(item.id)}
+          style={styles.deleteButton}
+        >
+          <Text style={styles.deleteText}>✕</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        onPress={() => item.onDelete && item.onDelete(item.id)}
-        style={styles.deleteButton}
-      >
-        <Text style={styles.deleteText}>✕</Text>
-      </TouchableOpacity>
-    </View>
+    )
   );
 }
 

@@ -86,7 +86,7 @@ export type PresetSessionType = {
     name: string;
 
     // Description of the preset of needed
-    description: string;
+    note: string;
 
     // Default value is 1, become 0 when the
     // session is deleted, to keep informations
@@ -103,10 +103,12 @@ export type PresetSessionType = {
  * This table is to know which exercise are in 
  * what session
  * 
- * @key preset_id
- * @key position
+ * @key id
  */
 export type PresetSessionExerciseType = {
+
+    // Id
+    id: number
 
     // Id of the preset
     preset_id: number;
@@ -116,9 +118,13 @@ export type PresetSessionExerciseType = {
 
     // Position of the exercise in the set
     position: number;
+}
 
-    // Number of set of this exercise
-    setnr: number;
+export type SetsType = {
+    id: number;
+    preset_exo_id: number;
+    position: number;
+    reps: string;
 }
 
 /**

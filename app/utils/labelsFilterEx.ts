@@ -1,7 +1,7 @@
 import { LabelType } from "../database/dataType";
-import { ExercisesWithLabelsType } from "../database/joinDateType";
+import { ExercisesExpandType } from "../database/otherDataType";
 
-export const labelsFilterEx = (exercises: ExercisesWithLabelsType[], labels: LabelType[]) => {
+export const labelsFilterEx = (exercises: ExercisesExpandType[], labels: LabelType[]) => {
 
     if (labels.length === 0) {
         return exercises

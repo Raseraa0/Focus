@@ -1,5 +1,7 @@
 import { ExercisesType } from './dataType';
 import { openDatabase } from './db';
+import { getLabelsByExercise } from './labelsService';
+import { ExercisesExpandType } from './otherDataType';
 
 /**
  * @name addExercise
@@ -50,8 +52,7 @@ export const getExercises = async () => {
 export const deleteExercise = async (id: number) => {
     const db = await openDatabase();
     try {
-        await db.runAsync("DELETE FROM exercises WHERE id = ?;", [id]);
-        console.log(`Exercice ${id} supprimé avec succès`);
+        await db.runAsync(`UPDATE exercises SET isActive = 0 WHERE id = ?`, [id]);
     } catch (error) {
         console.error("Erreur lors de la suppression de l'exercice :", error);
         throw error;
@@ -84,3 +85,24 @@ export const updateExercise = async (exerciseID: number, name: string, note: str
 
     return true;
 };
+
+export const getExercisesWithLabels = async () => {
+
+    // Get all exercises
+    const rawData = await getExercises();
+
+
+    const data = await Promise.all(
+        rawData.map(async (exo) => {
+            // Get corresponding labels
+            const correspondingLabels = await getLabelsByExercise(exo.id);
+            // Add a labels filed to structure
+            const ret: ExercisesExpandType = {
+                ...exo,
+                labels: correspondingLabels || [],
+            };
+            return ret;
+        })
+    );
+    return data;
+}
