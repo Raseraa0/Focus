@@ -14,23 +14,27 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20 # Mis à jour de 18 à 20 pour supporter eas-cli 18.3.0+
 
       - name: 🏗 Setup EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
-          pakager: npm
+          packager: npm
 
       - name: 📦 Install dependencies
         run: npm install
 
       - name: 🚀 Build APK
-        run: eas build --platform android --profile preview --non-interactive --local --output=./app-release.apk
+        # Ajout de l'installation de sharp-cli si nécessaire pour la gestion des icônes en local
+        run: |
+          npx expo prebuild
+          eas build --platform android --profile preview --non-interactive --local --output=./app-release.apk
 
       - name: 📎 Upload APK to Release
         uses: softprops/action-gh-release@v1
+        if: github.event_name == 'release' # S'assure que l'upload ne tourne que lors d'une release
         with:
           files: ./app-release.apk
         env:
