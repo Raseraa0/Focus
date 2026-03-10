@@ -8,7 +8,12 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "build": "eas build --platform android",
+    "eslint": "eslint .",
+    "format": "prettier --write .",
+    "check-types": "tsc --noEmit",
+    "validate": "npm run check-types && npm run lint && npm run eslint && npm run format"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
